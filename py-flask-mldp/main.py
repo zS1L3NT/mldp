@@ -1,6 +1,6 @@
 import joblib
 
-from flask import Flask, request
+from flask import Flask, request, send_file
 from flask_cors import CORS
 from pandas import DataFrame
 from sklearn.pipeline import Pipeline
@@ -17,7 +17,7 @@ CORS(app)
 
 @app.route("/")
 def _():
-    return __name__
+    return send_file("../web-react-mldp/dist/index.html")
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
