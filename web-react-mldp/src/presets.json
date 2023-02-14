@@ -1,0 +1,44 @@
+{
+    "low": {
+        "type": "red",
+        "fixed_acidity": 7.5,
+        "volatile_acidity": 0.5,
+        "citric_acid": 0.1,
+        "residual_sugar": 2.5,
+        "chlorides": 0.058,
+        "free_sulfur_dioxide": 5,
+        "total_sulfur_dioxide": 9,
+        "density": 0.99632,
+        "pH": 3.38,
+        "sulphates": 0.55,
+        "alcohol": 10.9
+    },
+    "medium": {
+        "type": "white",
+        "fixed_acidity": 7.4,
+        "volatile_acidity": 0.34,
+        "citric_acid": 0.42,
+        "residual_sugar": 1.1,
+        "chlorides": 0.033,
+        "free_sulfur_dioxide": 17,
+        "total_sulfur_dioxide": 171,
+        "density": 0.9917,
+        "pH": 3.12,
+        "sulphates": 0.53,
+        "alcohol": 11.3
+    },
+    "high": {
+        "type": "white",
+        "fixed_acidity": 6.2,
+        "volatile_acidity": 0.5,
+        "citric_acid": 0.48,
+        "residual_sugar": 1.2,
+        "chlorides": 0.029,
+        "free_sulfur_dioxide": 29,
+        "total_sulfur_dioxide": 75,
+        "density": 0.99,
+        "pH": 3.33,
+        "sulphates": 0.39,
+        "alcohol": 12.8
+    }
+}

@@ -12,7 +12,6 @@ const FormSlider = ({
 	decimals = 2,
 	value,
 	setValue,
-	debouncePredictQuality,
 	disabled = false
 }: {
 	title: string
@@ -22,7 +21,6 @@ const FormSlider = ({
 	decimals?: number
 	value: number
 	setValue: Dispatch<SetStateAction<number>>
-	debouncePredictQuality: () => void
 	disabled?: boolean
 }) => {
 	return (
@@ -36,10 +34,7 @@ const FormSlider = ({
 					}}
 					aria-label={title}
 					value={value}
-					onChange={value => {
-						setValue(value)
-						debouncePredictQuality()
-					}}
+					onChange={setValue}
 					step={Math.pow(0.1, decimals)}
 					min={min}
 					max={max}

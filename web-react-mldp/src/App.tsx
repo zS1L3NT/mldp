@@ -2,10 +2,11 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 
 import {
-	Container, FormControl, FormLabel, Heading, Select, Skeleton, Stack, Text
+	Button, Container, Flex, FormControl, FormLabel, Heading, Select, Skeleton, Stack, Text
 } from "@chakra-ui/react"
 
 import FormSlider from "./components/FormSlider"
+import presets from "./presets.json"
 import debounce from "./utils/debounce"
 
 const App = ({}: {}) => {
@@ -24,12 +25,23 @@ const App = ({}: {}) => {
 	const [quality, setQuality] = useState<"low" | "medium" | "high" | null>(null)
 
 	useEffect(() => {
-		debouncedPredictQuality()
-	}, [])
-
-	const debouncedPredictQuality = debounce(async () => {
 		setQuality(null)
+		debounce(predictQuality, 1000)()
+	}, [
+		fixedAcidity,
+		volatileAcidity,
+		citricAcid,
+		residualSugar,
+		// chlorides,
+		freeSulfurDioxide,
+		// totalSulfurDioxide,
+		density,
+		pH,
+		sulphates,
+		alcohol
+	])
 
+	const predictQuality = async () => {
 		const host = import.meta.env.PROD ? "" : "http://127.0.0.1:5000"
 		const response = await axios.post(`${host}/api/predict`, {
 			type,
@@ -49,7 +61,22 @@ const App = ({}: {}) => {
 		if (["low", "medium", "high"].includes(response.data.quality)) {
 			setQuality(response.data.quality)
 		}
-	}, 500)
+	}
+
+	const setPreset = (preset: "low" | "medium" | "high") => {
+		setType(presets[preset].type as "red" | "white")
+		setFixedAcidity(presets[preset].fixed_acidity)
+		setVolatileAcidity(presets[preset].volatile_acidity)
+		setCitricAcid(presets[preset].citric_acid)
+		setResidualSugar(presets[preset].residual_sugar)
+		// setChlorides(presets[preset].chlorides)
+		setFreeSulfurDioxide(presets[preset].free_sulfur_dioxide)
+		// setTotalSulfurDioxide(presets[preset].total_sulfur_dioxide)
+		setDensity(presets[preset].density)
+		setPH(presets[preset].pH)
+		setSulphates(presets[preset].sulphates)
+		setAlcohol(presets[preset].alcohol)
+	}
 
 	return (
 		<Container sx={{ py: 8 }}>
@@ -59,8 +86,26 @@ const App = ({}: {}) => {
 				the wine!
 			</Text>
 
+			<Flex sx={{ mt: 4, justifyContent: "center", gap: 2 }}>
+				<Button
+					onClick={() => setPreset("low")}
+					colorScheme="yellow">
+					Low Preset
+				</Button>
+				<Button
+					onClick={() => setPreset("medium")}
+					colorScheme="yellow">
+					Medium Preset
+				</Button>
+				<Button
+					onClick={() => setPreset("high")}
+					colorScheme="yellow">
+					High Preset
+				</Button>
+			</Flex>
+
 			<Stack
-				sx={{ mt: 6 }}
+				sx={{ mt: 8 }}
 				spacing={10}>
 				<FormControl>
 					<FormLabel>Wine Color</FormLabel>
@@ -79,7 +124,6 @@ const App = ({}: {}) => {
 					max={10}
 					value={fixedAcidity}
 					setValue={setFixedAcidity}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Volatile Acidity"
@@ -89,7 +133,6 @@ const App = ({}: {}) => {
 					decimals={3}
 					value={volatileAcidity}
 					setValue={setVolatileAcidity}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Citric Acid"
@@ -99,7 +142,6 @@ const App = ({}: {}) => {
 					decimals={3}
 					value={citricAcid}
 					setValue={setCitricAcid}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Residual Sugar"
@@ -108,7 +150,6 @@ const App = ({}: {}) => {
 					max={15}
 					value={residualSugar}
 					setValue={setResidualSugar}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Chlorides"
@@ -118,7 +159,6 @@ const App = ({}: {}) => {
 					decimals={4}
 					value={chlorides}
 					setValue={setChlorides}
-					debouncePredictQuality={debouncedPredictQuality}
 					disabled
 				/>
 				<FormSlider
@@ -128,7 +168,6 @@ const App = ({}: {}) => {
 					max={60}
 					value={freeSulfurDioxide}
 					setValue={setFreeSulfurDioxide}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Total Sulfur Dioxide"
@@ -138,7 +177,6 @@ const App = ({}: {}) => {
 					decimals={1}
 					value={totalSulfurDioxide}
 					setValue={setTotalSulfurDioxide}
-					debouncePredictQuality={debouncedPredictQuality}
 					disabled
 				/>
 				<FormSlider
@@ -149,7 +187,6 @@ const App = ({}: {}) => {
 					decimals={4}
 					value={density}
 					setValue={setDensity}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="pH"
@@ -159,7 +196,6 @@ const App = ({}: {}) => {
 					decimals={3}
 					value={pH}
 					setValue={setPH}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Sulphates"
@@ -169,7 +205,6 @@ const App = ({}: {}) => {
 					decimals={3}
 					value={sulphates}
 					setValue={setSulphates}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 				<FormSlider
 					title="Alcohol"
@@ -178,7 +213,6 @@ const App = ({}: {}) => {
 					max={14}
 					value={alcohol}
 					setValue={setAlcohol}
-					debouncePredictQuality={debouncedPredictQuality}
 				/>
 			</Stack>
 
