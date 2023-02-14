@@ -7,21 +7,27 @@ import {
 const FormSlider = ({
 	title,
 	min,
+	mid,
 	max,
 	decimals = 2,
 	value,
-	setValue
+	setValue,
+	debouncePredictQuality,
+	disabled = false
 }: {
 	title: string
 	min: number
+	mid: number
 	max: number
 	decimals?: number
 	value: number
 	setValue: Dispatch<SetStateAction<number>>
+	debouncePredictQuality: () => void
+	disabled?: boolean
 }) => {
 	return (
 		<FormControl>
-			<FormLabel>{title}</FormLabel>
+			<FormLabel sx={{ opacity: disabled ? 0.6 : 1 }}>{title}</FormLabel>
 			<Box sx={{ px: 4 }}>
 				<Slider
 					sx={{
@@ -30,10 +36,15 @@ const FormSlider = ({
 					}}
 					aria-label={title}
 					value={value}
-					onChange={setValue}
-					step={1 / Math.pow(10, decimals)}
+					onChange={value => {
+						setValue(value)
+						debouncePredictQuality()
+					}}
+					step={Math.pow(0.1, decimals)}
 					min={min}
-					max={max}>
+					max={max}
+					colorScheme="yellow"
+					isDisabled={disabled}>
 					<SliderMark
 						sx={{ mt: -8, ml: -3 }}
 						value={value}>
@@ -46,8 +57,8 @@ const FormSlider = ({
 					</SliderMark>
 					<SliderMark
 						sx={{ mt: 2, ml: -2 }}
-						value={(max - min) / 2 + min}>
-						{(max - min) / 2 + min}
+						value={mid}>
+						{mid}
 					</SliderMark>
 					<SliderMark
 						sx={{ mt: 2, ml: -2 }}
