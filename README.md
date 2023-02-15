@@ -30,7 +30,8 @@ This is the React frontend that consumes the Flask API.
 ## Usage
 
 ```
-$ python py-flask-mldp/main.py
+$ cd py-flask-mldp
+$ python main.py
 ```
 
 ## Credits
